@@ -11,7 +11,7 @@ let address2: string
 /**
  * Utilities
  */
-export async function createOrRestoreCosmosWallet(seedPhrase) {
+export async function createOrRestoreCosmosWallet(seedPhrase:any) {
   const mnemonic1 = seedPhrase
   const mnemonic2 =seedPhrase
 

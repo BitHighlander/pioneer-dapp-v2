@@ -4,9 +4,10 @@ import Image from 'next/image';
 
 interface LoginFormProps {
     onLogin: (password: string) => void;
+    createNewWallet: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onLogin, createNewWallet }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin, createNewWallet }:any) => {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {

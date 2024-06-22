@@ -11,7 +11,7 @@ let address2: string
 /**
  * Utilities
  */
-export async function createOrRestoreMultiversxWallet(seedPhrase) {
+export async function createOrRestoreMultiversxWallet(seedPhrase:any) {
   if (seedPhrase) {
     wallet1 = await MultiversxLib.init({ mnemonic: seedPhrase })
   } else {

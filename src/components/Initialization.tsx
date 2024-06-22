@@ -13,7 +13,7 @@ import { createWeb3Wallet, web3wallet } from '@/utils/WalletConnectUtil';
 import { createOrRestoreKadenaWallet } from '@/utils/KadenaWalletUtil';
 import useSmartAccounts from '@/hooks/useSmartAccounts';
 
-const Initialization = ({ seedPhrase, onInitialized }) => {
+const Initialization = ({ seedPhrase, onInitialized }:any) => {
     const [initialized, setInitialized] = useState(false);
     const prevRelayerURLValue = useRef<string>('');
 

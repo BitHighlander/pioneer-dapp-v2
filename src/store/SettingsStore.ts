@@ -193,10 +193,10 @@ const SettingsStore = {
     }
   },
 
-  async toggleKernelSmartAccountsEnabled() {
+  async toggleKernelSmartAccountsEnabled(seedPhrase:any) {
     state.kernelSmartAccountEnabled = !state.kernelSmartAccountEnabled
     if (state.kernelSmartAccountEnabled) {
-      const { eip155Addresses, eip155Wallets } = createOrRestoreEIP155Wallet()
+      const { eip155Addresses, eip155Wallets } = createOrRestoreEIP155Wallet(seedPhrase)
       const { kernelSmartAccountAddress } = await createOrRestoreKernelSmartAccount(
         eip155Wallets[eip155Addresses[0]].getPrivateKey()
       )
@@ -211,10 +211,10 @@ const SettingsStore = {
     }
   },
 
-  async toggleSafeSmartAccountsEnabled() {
+  async toggleSafeSmartAccountsEnabled(seedPhrase:any) {
     state.safeSmartAccountEnabled = !state.safeSmartAccountEnabled
     if (state.safeSmartAccountEnabled) {
-      const { eip155Addresses, eip155Wallets } = createOrRestoreEIP155Wallet()
+      const { eip155Addresses, eip155Wallets } = createOrRestoreEIP155Wallet(seedPhrase)
       const { safeSmartAccountAddress } = await createOrRestoreSafeSmartAccount(
         eip155Wallets[eip155Addresses[0]].getPrivateKey()
       )
@@ -229,10 +229,10 @@ const SettingsStore = {
     }
   },
 
-  async toggleBiconomySmartAccountsEnabled() {
+  async toggleBiconomySmartAccountsEnabled(seedPhrase:any) {
     state.biconomySmartAccountEnabled = !state.biconomySmartAccountEnabled
     if (state.biconomySmartAccountEnabled) {
-      const { eip155Addresses, eip155Wallets } = createOrRestoreEIP155Wallet()
+      const { eip155Addresses, eip155Wallets } = createOrRestoreEIP155Wallet(seedPhrase)
       const { biconomySmartAccountAddress } = await createOrRestoreBiconomySmartAccount(
         eip155Wallets[eip155Addresses[0]].getPrivateKey()
       )

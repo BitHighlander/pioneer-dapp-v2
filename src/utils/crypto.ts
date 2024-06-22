@@ -1,3 +1,4 @@
+// @ts-ignore
 import CryptoJS from 'crypto-js';
 
 export const encryptAES = (text: string, password: string): string => {

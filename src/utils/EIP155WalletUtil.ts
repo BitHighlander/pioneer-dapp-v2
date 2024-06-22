@@ -14,7 +14,7 @@ let address2: string
 /**
  * Utilities
  */
-export function createOrRestoreEIP155Wallet(seedPhrase) {
+export function createOrRestoreEIP155Wallet(seedPhrase:any) {
   const mnemonic1 = seedPhrase
   const mnemonic2 = seedPhrase
 

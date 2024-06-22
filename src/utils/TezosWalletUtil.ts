@@ -18,7 +18,7 @@ export function getTezosWallet(address: string) {
   return wallet?.[1]
 }
 
-export async function createOrRestoreTezosWallet(seedPhrase) {
+export async function createOrRestoreTezosWallet(seedPhrase:any) {
   const mnemonic1 = seedPhrase
 
   if (mnemonic1) {

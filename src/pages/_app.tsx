@@ -96,7 +96,7 @@ export default function App({ Component, pageProps }: AppProps) {
     handleLogout();
   };
 
-  const onInitialized = (initStatus) => {
+  const onInitialized = (initStatus:any) => {
     setInitialized(initStatus);
   };
 

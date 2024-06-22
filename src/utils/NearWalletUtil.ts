@@ -6,7 +6,7 @@ export let nearWallet: NearWallet
 /**
  * Utilities
  */
-export async function createOrRestoreNearWallet(seedPhrase) {
+export async function createOrRestoreNearWallet(seedPhrase:any) {
   // NEAR only supports dev accounts in testnet.
   const wallet = await NearWallet.init('testnet')
   const accounts = await wallet.getAllAccounts()

@@ -1,4 +1,5 @@
 import * as bip39 from 'bip39'
+//@ts-ignore
 import * as hdkey from 'hdkey'
 import TronLib from '@/lib/TronLib'
 
