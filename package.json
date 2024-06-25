@@ -2,7 +2,7 @@
   "name": "react-wallet-v2",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev -p 3002",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -15,6 +15,9 @@
     "@cosmjs/proto-signing": "0.32.3",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@json-rpc-tools/utils": "1.7.6",
     "@kadena/cryptography-utils": "^0.4.0",
     "@kadena/types": "^0.6.0",
