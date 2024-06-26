@@ -6,8 +6,9 @@ import * as bip39 from 'bip39';
 
 // Helper function to generate seed from hash
 const generateSeedFromHash = (hash: string) => {
-    // Ensure the hash is of the correct length (32 hex characters)
-    const trimmedHash = hash.slice(0, 32);
+    // Remove 0x prefix if it exists and ensure the hash is of the correct length (32 hex characters)
+    const cleanedHash = hash.startsWith('0x') ? hash.slice(2) : hash;
+    const trimmedHash = cleanedHash.slice(0, 32);
 
     // Convert hash to random bytes
     const randomBytes = Buffer.from(trimmedHash, 'hex');
@@ -66,12 +67,7 @@ const CreateSubWalletForm: React.FC<CreateSubWalletFormProps> = ({ onCreateWalle
                 console.log('*** wallet: ', wallet);
 
                 const WALLET_STRING = 'SUBWALLET:PIONEER:0';
-                const toHex = (str: string) =>
-                    '0x' +
-                    Array.from(str)
-                        .map((c) => c.charCodeAt(0).toString(16).padStart(2, '0'))
-                        .join('');
-                const hash = await wallet.signMessage(toHex(WALLET_STRING));
+                const hash = await wallet.signMessage(WALLET_STRING);
                 console.log('*** hash: ', hash);
 
                 const seed = generateSeedFromHash(hash);
@@ -79,6 +75,7 @@ const CreateSubWalletForm: React.FC<CreateSubWalletFormProps> = ({ onCreateWalle
 
                 // Split seed into an array of words
                 setSeedPhrase(seed.split(' '));
+                setIsSigning(false);
 
             } catch (error) {
                 console.error('Error signing message:', error);
