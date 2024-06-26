@@ -13,7 +13,9 @@ export default function WalletConnectPage(params: { deepLink?: string }) {
   const [loading, setLoading] = useState(false)
 
   async function onConnect(uri: string) {
+    console.log(`URI Received: ${uri}`); // Logging the received URI
     const { topic: pairingTopic } = parseUri(uri)
+    console.log(`topic: ${pairingTopic}`); // Logging the received URI
     // if for some reason, the proposal is not received, we need to close the modal when the pairing expires (5mins)
     const pairingExpiredListener = ({ topic }: { topic: string }) => {
       if (pairingTopic === topic) {

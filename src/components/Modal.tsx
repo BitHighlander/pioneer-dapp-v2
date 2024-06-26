@@ -30,6 +30,7 @@ export default function Modal() {
   }, [open])
 
   const componentView = useMemo(() => {
+    console.log('switch to view ', view)
     switch (view) {
       case 'SessionProposalModal':
         return <SessionProposalModal />

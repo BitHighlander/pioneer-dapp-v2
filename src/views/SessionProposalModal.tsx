@@ -36,7 +36,7 @@ import usePriorityAccounts from '@/hooks/usePriorityAccounts'
 import useSmartAccounts from '@/hooks/useSmartAccounts'
 import { EIP5792_METHODS } from '@/data/EIP5792Data'
 import { getWalletCapabilities } from '@/utils/EIP5792WalletUtil'
-
+const tag = " | views/SessionProposalModal | "
 const StyledText = styled(Text, {
   fontWeight: 400
 } as any)
@@ -52,6 +52,7 @@ export default function SessionProposalModal() {
   const proposal = data?.data?.proposal as SignClientTypes.EventArguments['session_proposal']
   const [isLoadingApprove, setIsLoadingApprove] = useState(false)
   const [isLoadingReject, setIsLoadingReject] = useState(false)
+  console.log(tag,'proposal', data.data?.proposal)
   const { getAvailableSmartAccounts } = useSmartAccounts()
 
   const supportedNamespaces = useMemo(() => {
@@ -158,7 +159,7 @@ export default function SessionProposalModal() {
       }
     }
   }, [])
-  console.log('supportedNamespaces', supportedNamespaces, eip155Addresses)
+  console.log(tag,'supportedNamespaces', supportedNamespaces, eip155Addresses)
 
   const requestedChains = useMemo(() => {
     if (!proposal) return []
@@ -173,7 +174,7 @@ export default function SessionProposalModal() {
       const chains = key.includes(':') ? key : values.chains
       optional.push(chains)
     }
-    console.log('requestedChains', [...new Set([...required.flat(), ...optional.flat()])])
+    console.log(tag,'requestedChains', [...new Set([...required.flat(), ...optional.flat()])])
 
     return [...new Set([...required.flat(), ...optional.flat()])]
   }, [proposal])

@@ -7,7 +7,7 @@ interface LoginFormProps {
     createNewWallet: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onLogin, createNewWallet }:any) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin, createNewWallet }: any) => {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
@@ -40,8 +40,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, createNewWallet }:any) =
                         marginBottom: '10px',
                         borderRadius: '4px',
                         border: '1px solid #ccc',
-                        color: '#000', // Ensure the text color is visible
-                        backgroundColor: '#fff' // Ensure the background color is white
+                        color: '#000',
+                        backgroundColor: '#fff'
                     }}
                 />
                 <button
@@ -58,21 +58,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, createNewWallet }:any) =
                 >
                     Submit
                 </button>
-                <br/>
-                {/*<button*/}
-                {/*    onClick={handleCreateNewWallet}*/}
-                {/*    style={{*/}
-                {/*        width: '100%',*/}
-                {/*        padding: '10px',*/}
-                {/*        borderRadius: '4px',*/}
-                {/*        backgroundColor: '#007bff',*/}
-                {/*        color: '#fff',*/}
-                {/*        border: 'none',*/}
-                {/*        cursor: 'pointer'*/}
-                {/*    }}*/}
-                {/*>*/}
-                {/*    Create New Wallet*/}
-                {/*</button>*/}
+                <br />
+                <div  onClick={handleCreateNewWallet} style={{ marginTop: '10px', color: 'blue', fontSize: '12px' }}>
+                    Wipe Wallet?
+                </div>
             </Card.Body>
         </Card>
     );

@@ -7,7 +7,7 @@ interface CreateWalletFormProps {
     onCreateWallet: (password: string, seedPhrase: string) => void;
 }
 
-const CreateWalletForm: React.FC<CreateWalletFormProps> = ({ onCreateWallet }) => {
+const CreateWalletForm: React.FC<CreateWalletFormProps> = ({ onCreateWallet, onGoBack }) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [seedPhrase, setSeedPhrase] = useState(generateMnemonic().split(' '));
@@ -36,6 +36,18 @@ const CreateWalletForm: React.FC<CreateWalletFormProps> = ({ onCreateWallet }) =
 
     return (
         <Container display="flex" justify="center" alignItems="center" style={{ height: '100vh' }}>
+            <button onClick={onGoBack}
+                    style={{
+                        width: '100%',
+                        padding: '10px',
+                        borderRadius: '4px',
+                        backgroundColor: '#007bff',
+                        color: '#fff',
+                        border: 'none',
+                        cursor: 'pointer'
+                    }}>
+                go back
+            </button>
             <Card css={{ mw: "400px", p: "$6", textAlign: 'center' }}>
                 <h2>Create Wallet</h2>
                 <button

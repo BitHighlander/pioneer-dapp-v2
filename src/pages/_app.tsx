@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { set, get, del, keys } from 'idb-keyval';
+import { set, get } from 'idb-keyval';
 import { Toaster } from 'react-hot-toast';
 import { createTheme, NextUIProvider, Container, Card, Loading } from '@nextui-org/react';
 import { AppProps } from 'next/app';
@@ -7,13 +7,16 @@ import { encryptAES, decryptAES } from '@/utils/crypto';
 import Layout from '@/components/Layout';
 import LoginForm from '@/components/LoginForm';
 import CreateWalletForm from '@/components/CreateWalletForm';
+import RestoreWalletForm from '@/components/RestoreWalletForm';
+import ChoiceForm from '@/components/ChoiceForm'; // Import the new component
 import useWalletConnectEventsManager from '@/hooks/useWalletConnectEventsManager';
 import Initialization from '@/components/Initialization';
 import { web3wallet } from '@/utils/WalletConnectUtil';
 import { RELAYER_EVENTS } from '@walletconnect/core';
 import '../../public/main.css';
 import { styledToast } from '@/utils/HelperUtil';
-const TAG  = ' | _app.tsx | '
+
+const TAG = ' | _app.tsx | ';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -21,8 +24,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const [seedPhrase, setSeedPhrase] = useState<string | null>(null);
   const [shouldInitialize, setShouldInitialize] = useState(false);
   const [initialized, setInitialized] = useState(false);
-
-  useWalletConnectEventsManager(!!seedPhrase);
+  const [showCreateWallet, setShowCreateWallet] = useState(false);
+  const [showRestoreWallet, setShowRestoreWallet] = useState(false); // Add state for restore wallet form
 
   useEffect(() => {
     const checkForBackup = async () => {
@@ -51,15 +54,16 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [seedPhrase]);
 
   const handleLogin = async (password: string) => {
-    let tag = TAG+ " | handleLogin | "
-    try{
+    let tag = TAG + " | handleLogin | ";
+    try {
       const storedEncryptedPrivateKey = await get('encryptedPrivateKey');
-      console.log(tag,'storedEncryptedPrivateKey: ',storedEncryptedPrivateKey)
+      console.log(tag, 'storedEncryptedPrivateKey: ', storedEncryptedPrivateKey);
       if (storedEncryptedPrivateKey) {
         try {
           const decryptedSeedPhrase = decryptAES(storedEncryptedPrivateKey, password);
           if (decryptedSeedPhrase) {
             setSeedPhrase(decryptedSeedPhrase);
+            useWalletConnectEventsManager(!!seedPhrase);
             setLoggedIn(true);
           } else {
             alert("Invalid password. Please try again.");
@@ -70,12 +74,19 @@ export default function App({ Component, pageProps }: AppProps) {
       } else {
         alert("No backup found.");
       }
-    }catch(e){
-      console.error(tag,e)
+    } catch (e) {
+      console.error(tag, e);
     }
   };
 
   const handleCreateWallet = async (password: string, seedPhrase: string) => {
+    const encryptedPrivateKey = encryptAES(seedPhrase, password);
+    await set('encryptedPrivateKey', encryptedPrivateKey);
+    setSeedPhrase(seedPhrase);
+    setLoggedIn(true);
+  };
+
+  const handleRestoreWallet = async (password: string, seedPhrase: string) => {
     const encryptedPrivateKey = encryptAES(seedPhrase, password);
     await set('encryptedPrivateKey', encryptedPrivateKey);
     setSeedPhrase(seedPhrase);
@@ -92,11 +103,24 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   };
 
-  const createNewWallet = async () => {
+  const createNewWallet = () => {
     handleLogout();
+    setShowCreateWallet(true);
+    setShowRestoreWallet(false);
   };
 
-  const onInitialized = (initStatus:any) => {
+  const restoreWallet = () => {
+    handleLogout();
+    setShowCreateWallet(false);
+    setShowRestoreWallet(true);
+  };
+
+  const onGoBack = () => {
+    setShowCreateWallet(false);
+    setShowRestoreWallet(false);
+  }
+
+  const onInitialized = (initStatus: any) => {
     setInitialized(initStatus);
   };
 
@@ -136,8 +160,12 @@ export default function App({ Component, pageProps }: AppProps) {
                 </>
             ) : hasBackup ? (
                 <LoginForm onLogin={handleLogin} createNewWallet={createNewWallet} />
+            ) : showCreateWallet ? (
+                <CreateWalletForm onCreateWallet={handleCreateWallet} onGoBack={onGoBack}/>
+            ) : showRestoreWallet ? (
+                <RestoreWalletForm onRestoreWallet={handleRestoreWallet} onGoBack={onGoBack}/>
             ) : (
-                <CreateWalletForm onCreateWallet={handleCreateWallet} />
+                <ChoiceForm onCreateNewWallet={createNewWallet} onRestoreWallet={restoreWallet} />
             )}
           </Card>
         </Container>
