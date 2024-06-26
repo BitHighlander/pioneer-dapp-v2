@@ -10,14 +10,16 @@ import LoginForm from '@/components/LoginForm';
 import CreateWalletForm from '@/components/CreateWalletForm';
 import RestoreWalletForm from '@/components/RestoreWalletForm';
 import ChoiceForm from '@/components/ChoiceForm';
+import CreateSubWalletForm from '@/components/CreateSubWalletForm'; // Import CreateSubWalletForm
 import useWalletConnectEventsManager from '@/hooks/useWalletConnectEventsManager';
 import Initialization from '@/components/Initialization';
 import { web3wallet } from '@/utils/WalletConnectUtil';
 import { RELAYER_EVENTS } from '@walletconnect/core';
 import { styledToast } from '@/utils/HelperUtil';
 import { useOnStartApp } from '@/utils/onStart';
-import { usePioneer } from "@coinmasters/pioneer-react"
+import { usePioneer } from "@coinmasters/pioneer-react";
 
+// @ts-ignore
 const Onboarding = ({ Component, pageProps }) => {
     const { state, connectWallet } = usePioneer();
     const { api, app, assets, context } = state;
@@ -29,19 +31,30 @@ const Onboarding = ({ Component, pageProps }) => {
     const [initialized, setInitialized] = useState(false);
     const [showCreateWallet, setShowCreateWallet] = useState(false);
     const [showRestoreWallet, setShowRestoreWallet] = useState(false);
+    const [showCreateSubWallet, setShowCreateSubWallet] = useState(false);
+    const [isKeepKeyPaired, setIsKeepKeyPaired] = useState(false);
 
     const onStartApp = useOnStartApp();
     const onStartAppCalled = useRef(false); // To track if onStartApp has been called
 
+    useEffect(() => {
+        if (app?.pubkeys && app.pubkeys.some((pubkey: { networks: string[] }) => pubkey.networks?.some(network => network.includes('eip155:')))) {
+            setIsKeepKeyPaired(true);
+            setShowCreateSubWallet(true); // Show CreateSubWalletForm when KeepKey is paired
+        }
+    }, [app?.pubkeys]);
+
     let onStart = async function () {
         if (app && app.pairWallet && !isConnecting) {
             console.log('App loaded... connecting');
+
             await connectWallet('KEEPKEY');
             setIsConnecting(true);
 
             await app.getPubkeys();
             await app.getBalances();
         } else {
+            console.error(e)
             console.log('App not loaded yet... can not connect');
         }
     };
@@ -139,9 +152,15 @@ const Onboarding = ({ Component, pageProps }) => {
         setShowRestoreWallet(true);
     };
 
+    const createSubWallet = () => {
+        handleLogout();
+        setShowCreateSubWallet(true);
+    };
+
     const onGoBack = () => {
         setShowCreateWallet(false);
         setShowRestoreWallet(false);
+        setShowCreateSubWallet(false);
     };
 
     const onInitialized = (initStatus: any) => {
@@ -189,8 +208,10 @@ const Onboarding = ({ Component, pageProps }) => {
                             <CreateWalletForm onCreateWallet={handleCreateWallet} onGoBack={onGoBack} />
                         ) : showRestoreWallet ? (
                             <RestoreWalletForm onRestoreWallet={handleRestoreWallet} onGoBack={onGoBack} />
+                        ) : showCreateSubWallet ? (
+                            <CreateSubWalletForm usePioneer={usePioneer} onCreateWallet={handleCreateWallet} onGoBack={onGoBack} />
                         ) : (
-                            <ChoiceForm onCreateNewWallet={createNewWallet} onRestoreWallet={restoreWallet} />
+                            <ChoiceForm onCreateNewWallet={createNewWallet} onRestoreWallet={restoreWallet} onCreateSubWallet={createSubWallet} />
                         )}
                     </Card>
                 </Container>
