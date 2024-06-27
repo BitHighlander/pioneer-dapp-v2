@@ -48,7 +48,6 @@ const CreateWalletForm: React.FC<CreateWalletFormProps> = ({ onCreateWallet, onG
                     }}>
                 go back
             </button>
-            <Card css={{ mw: "400px", p: "$6", textAlign: 'center' }}>
                 <h2>Create Wallet</h2>
                 <button
                     onMouseDown={() => setShowSeedPhrase(true)}
@@ -124,7 +123,6 @@ const CreateWalletForm: React.FC<CreateWalletFormProps> = ({ onCreateWallet, onG
                 <p className="warning">
                     Write down your secret phrase on paper and store it in a safe place. Do not create a digital copy, such as a screenshot or text file. Do not store it in an email or the cloud.
                 </p>
-            </Card>
         </Container>
     );
 };
